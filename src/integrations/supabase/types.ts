@@ -9,6 +9,119 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      ai_settings: {
+        Row: {
+          blacklisted_words: string[] | null
+          created_at: string
+          custom_prompt: string | null
+          id: string
+          include_emojis: boolean
+          max_length: number
+          response_templates: string[] | null
+          tone: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blacklisted_words?: string[] | null
+          created_at?: string
+          custom_prompt?: string | null
+          id?: string
+          include_emojis?: boolean
+          max_length?: number
+          response_templates?: string[] | null
+          tone?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blacklisted_words?: string[] | null
+          created_at?: string
+          custom_prompt?: string | null
+          id?: string
+          include_emojis?: boolean
+          max_length?: number
+          response_templates?: string[] | null
+          tone?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      campaigns: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          status: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      comments: {
+        Row: {
+          ad_id: string
+          author: string
+          content: string
+          created_at: string
+          facebook_comment_id: string
+          id: string
+          replied: boolean
+          reply_content: string | null
+          reply_created_at: string | null
+          reply_status: string
+        }
+        Insert: {
+          ad_id: string
+          author: string
+          content: string
+          created_at?: string
+          facebook_comment_id: string
+          id?: string
+          replied?: boolean
+          reply_content?: string | null
+          reply_created_at?: string | null
+          reply_status?: string
+        }
+        Update: {
+          ad_id?: string
+          author?: string
+          content?: string
+          created_at?: string
+          facebook_comment_id?: string
+          id?: string
+          replied?: boolean
+          reply_content?: string | null
+          reply_created_at?: string | null
+          reply_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_ad_id_fkey"
+            columns: ["ad_id"]
+            isOneToOne: false
+            referencedRelation: "facebook_ads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companies: {
         Row: {
           created_at: string
@@ -45,6 +158,80 @@ export type Database = {
           name?: string
           size?: string
           website?: string
+        }
+        Relationships: []
+      }
+      facebook_ads: {
+        Row: {
+          campaign_id: string
+          created_at: string
+          facebook_ad_id: string
+          id: string
+          last_scanned: string | null
+          name: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          campaign_id: string
+          created_at?: string
+          facebook_ad_id: string
+          id?: string
+          last_scanned?: string | null
+          name: string
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          campaign_id?: string
+          created_at?: string
+          facebook_ad_id?: string
+          id?: string
+          last_scanned?: string | null
+          name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "facebook_ads_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      facebook_credentials: {
+        Row: {
+          access_token: string
+          created_at: string
+          id: string
+          page_access_token: string | null
+          page_id: string | null
+          token_expires_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token: string
+          created_at?: string
+          id?: string
+          page_access_token?: string | null
+          page_id?: string | null
+          token_expires_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          created_at?: string
+          id?: string
+          page_access_token?: string | null
+          page_id?: string | null
+          token_expires_at?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -180,6 +367,60 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scan_logs: {
+        Row: {
+          ad_id: string | null
+          campaign_id: string | null
+          comments_found: number | null
+          comments_replied: number | null
+          completed_at: string | null
+          created_by: string | null
+          error_message: string | null
+          id: string
+          started_at: string
+          status: string
+        }
+        Insert: {
+          ad_id?: string | null
+          campaign_id?: string | null
+          comments_found?: number | null
+          comments_replied?: number | null
+          completed_at?: string | null
+          created_by?: string | null
+          error_message?: string | null
+          id?: string
+          started_at?: string
+          status: string
+        }
+        Update: {
+          ad_id?: string | null
+          campaign_id?: string | null
+          comments_found?: number | null
+          comments_replied?: number | null
+          completed_at?: string | null
+          created_by?: string | null
+          error_message?: string | null
+          id?: string
+          started_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scan_logs_ad_id_fkey"
+            columns: ["ad_id"]
+            isOneToOne: false
+            referencedRelation: "facebook_ads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scan_logs_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
             referencedColumns: ["id"]
           },
         ]
