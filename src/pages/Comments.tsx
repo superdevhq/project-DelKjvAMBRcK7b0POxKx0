@@ -4,8 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchComments, fetchPendingComments, generateAIReply } from "@/data/mockData";
 import { Comment } from "@/lib/types";
 import { Navbar } from "@/components/layout/Navbar";
-import { AppSidebar, SidebarToggle } from "@/components/layout/AppSidebar";
-import { SidebarOverlay } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/AppSidebar";
 import { CommentQueue } from "@/components/comments/CommentQueue";
 import { CommentHistory } from "@/components/comments/CommentHistory";
 
@@ -72,20 +71,16 @@ export default function Comments() {
   };
 
   return (
-    <>
+    <div className="flex min-h-screen">
       <AppSidebar />
-      <SidebarOverlay />
-      <div className="flex min-h-screen flex-col lg:pl-[280px]">
-        <SidebarToggle />
+      <div className="flex-1">
         <Navbar />
         <main className="flex-1 p-6 md:p-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold tracking-tight">Comments</h2>
-          </div>
+          <h1 className="text-3xl font-bold mb-8">Comments</h1>
           
-          <Tabs defaultValue="queue" className="space-y-6">
-            <TabsList>
-              <TabsTrigger value="queue">
+          <Tabs defaultValue="queue" className="w-full">
+            <TabsList className="settings-tabs mb-6">
+              <TabsTrigger value="queue" className="settings-tab">
                 Queue
                 {pendingComments.length > 0 && (
                   <span className="ml-2 rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">
@@ -93,7 +88,7 @@ export default function Comments() {
                   </span>
                 )}
               </TabsTrigger>
-              <TabsTrigger value="history">History</TabsTrigger>
+              <TabsTrigger value="history" className="settings-tab">History</TabsTrigger>
             </TabsList>
             <TabsContent value="queue">
               <CommentQueue 
@@ -111,6 +106,6 @@ export default function Comments() {
           </Tabs>
         </main>
       </div>
-    </>
+    </div>
   );
 }

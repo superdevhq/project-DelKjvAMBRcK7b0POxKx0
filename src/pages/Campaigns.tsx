@@ -5,8 +5,7 @@ import { PlusCircle } from "lucide-react";
 import { fetchCampaigns } from "@/data/mockData";
 import { Campaign } from "@/lib/types";
 import { Navbar } from "@/components/layout/Navbar";
-import { AppSidebar, SidebarToggle } from "@/components/layout/AppSidebar";
-import { SidebarOverlay } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/AppSidebar";
 import { CampaignCard } from "@/components/campaigns/CampaignCard";
 import { CampaignForm } from "@/components/campaigns/CampaignForm";
 import {
@@ -56,15 +55,13 @@ export default function Campaigns() {
   };
 
   return (
-    <>
+    <div className="flex min-h-screen">
       <AppSidebar />
-      <SidebarOverlay />
-      <div className="flex min-h-screen flex-col lg:pl-[280px]">
-        <SidebarToggle />
+      <div className="flex-1">
         <Navbar />
         <main className="flex-1 p-6 md:p-8">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold tracking-tight">Campaigns</h2>
+            <h1 className="text-3xl font-bold">Ad Campaigns</h1>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="flex items-center gap-2">
@@ -110,6 +107,6 @@ export default function Campaigns() {
           )}
         </main>
       </div>
-    </>
+    </div>
   );
 }

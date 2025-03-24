@@ -6,8 +6,7 @@ import { Activity, MessageSquare, Target, Zap } from "lucide-react";
 import { fetchCampaigns, fetchPendingComments } from "@/data/mockData";
 import { Campaign, Comment } from "@/lib/types";
 import { Navbar } from "@/components/layout/Navbar";
-import { AppSidebar, SidebarToggle } from "@/components/layout/AppSidebar";
-import { SidebarOverlay } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/AppSidebar";
 
 export default function Dashboard() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -40,25 +39,23 @@ export default function Dashboard() {
   const pendingCount = pendingComments.length;
 
   return (
-    <>
+    <div className="flex min-h-screen">
       <AppSidebar />
-      <SidebarOverlay />
-      <div className="flex min-h-screen flex-col lg:pl-[280px]">
-        <SidebarToggle />
+      <div className="flex-1">
         <Navbar />
         <main className="flex-1 p-6 md:p-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-          </div>
+          <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+          
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
-              <TabsTrigger value="reports">Reports</TabsTrigger>
+            <TabsList className="settings-tabs mb-6">
+              <TabsTrigger value="overview" className="settings-tab">Overview</TabsTrigger>
+              <TabsTrigger value="analytics" className="settings-tab">Analytics</TabsTrigger>
+              <TabsTrigger value="reports" className="settings-tab">Reports</TabsTrigger>
             </TabsList>
+            
             <TabsContent value="overview" className="space-y-6">
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <Card className="hover:shadow-md transition-all duration-200">
+                <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Total Campaigns
@@ -74,7 +71,7 @@ export default function Dashboard() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="hover:shadow-md transition-all duration-200">
+                <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Active Ads
@@ -90,7 +87,7 @@ export default function Dashboard() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="hover:shadow-md transition-all duration-200">
+                <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Total Comments
@@ -106,7 +103,7 @@ export default function Dashboard() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="hover:shadow-md transition-all duration-200">
+                <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       AI Response Rate
@@ -127,7 +124,7 @@ export default function Dashboard() {
               </div>
               
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4 hover:shadow-md transition-all duration-200">
+                <Card className="col-span-4">
                   <CardHeader>
                     <CardTitle>Recent Activity</CardTitle>
                     <CardDescription>
@@ -172,7 +169,7 @@ export default function Dashboard() {
                     )}
                   </CardContent>
                 </Card>
-                <Card className="col-span-3 hover:shadow-md transition-all duration-200">
+                <Card className="col-span-3">
                   <CardHeader>
                     <CardTitle>Active Campaigns</CardTitle>
                     <CardDescription>
@@ -226,6 +223,6 @@ export default function Dashboard() {
           </Tabs>
         </main>
       </div>
-    </>
+    </div>
   );
 }
