@@ -6,7 +6,8 @@ import { Activity, MessageSquare, Target, Zap } from "lucide-react";
 import { fetchCampaigns, fetchPendingComments } from "@/data/mockData";
 import { Campaign, Comment } from "@/lib/types";
 import { Navbar } from "@/components/layout/Navbar";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AppSidebar, SidebarToggle } from "@/components/layout/AppSidebar";
+import { SidebarOverlay } from "@/components/ui/sidebar";
 
 export default function Dashboard() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -39,30 +40,32 @@ export default function Dashboard() {
   const pendingCount = pendingComments.length;
 
   return (
-    <div className="h-full relative">
-      <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-80 bg-gray-900">
-        <Sidebar />
-      </div>
-      <main className="md:pl-72">
+    <>
+      <AppSidebar />
+      <SidebarOverlay />
+      <div className="flex min-h-screen flex-col lg:pl-[280px]">
+        <SidebarToggle />
         <Navbar />
-        <div className="p-8">
-          <div className="flex items-center justify-between">
+        <main className="flex-1 p-6 md:p-8">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
           </div>
-          <Tabs defaultValue="overview" className="mt-6">
+          <Tabs defaultValue="overview" className="space-y-6">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="reports">Reports</TabsTrigger>
             </TabsList>
-            <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
+            <TabsContent value="overview" className="space-y-6">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Total Campaigns
                     </CardTitle>
-                    <Target className="h-4 w-4 text-muted-foreground" />
+                    <div className="rounded-full bg-primary/10 p-2">
+                      <Target className="h-4 w-4 text-primary" />
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{totalCampaigns}</div>
@@ -71,12 +74,14 @@ export default function Dashboard() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Active Ads
                     </CardTitle>
-                    <Activity className="h-4 w-4 text-muted-foreground" />
+                    <div className="rounded-full bg-primary/10 p-2">
+                      <Activity className="h-4 w-4 text-primary" />
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{totalAds}</div>
@@ -85,12 +90,14 @@ export default function Dashboard() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Total Comments
                     </CardTitle>
-                    <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                    <div className="rounded-full bg-primary/10 p-2">
+                      <MessageSquare className="h-4 w-4 text-primary" />
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{totalComments}</div>
@@ -99,12 +106,14 @@ export default function Dashboard() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       AI Response Rate
                     </CardTitle>
-                    <Zap className="h-4 w-4 text-muted-foreground" />
+                    <div className="rounded-full bg-primary/10 p-2">
+                      <Zap className="h-4 w-4 text-primary" />
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
@@ -117,8 +126,8 @@ export default function Dashboard() {
                 </Card>
               </div>
               
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+                <Card className="col-span-4 hover:shadow-md transition-all duration-200">
                   <CardHeader>
                     <CardTitle>Recent Activity</CardTitle>
                     <CardDescription>
@@ -137,7 +146,7 @@ export default function Dashboard() {
                     ) : (
                       <div className="space-y-4">
                         {pendingComments.map(comment => (
-                          <div key={comment.id} className="border rounded-lg p-4">
+                          <div key={comment.id} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors">
                             <div className="flex items-start gap-4">
                               <div className="rounded-full bg-primary/10 p-2">
                                 <MessageSquare className="h-4 w-4 text-primary" />
@@ -163,7 +172,7 @@ export default function Dashboard() {
                     )}
                   </CardContent>
                 </Card>
-                <Card className="col-span-3">
+                <Card className="col-span-3 hover:shadow-md transition-all duration-200">
                   <CardHeader>
                     <CardTitle>Active Campaigns</CardTitle>
                     <CardDescription>
@@ -184,7 +193,7 @@ export default function Dashboard() {
                         {campaigns
                           .filter(campaign => campaign.status === 'active')
                           .map(campaign => (
-                            <div key={campaign.id} className="flex items-center">
+                            <div key={campaign.id} className="flex items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
                               <div className="flex-1 space-y-1">
                                 <p className="text-sm font-medium leading-none">
                                   {campaign.name}
@@ -215,8 +224,8 @@ export default function Dashboard() {
               </div>
             </TabsContent>
           </Tabs>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }

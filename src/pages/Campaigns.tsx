@@ -5,7 +5,8 @@ import { PlusCircle } from "lucide-react";
 import { fetchCampaigns } from "@/data/mockData";
 import { Campaign } from "@/lib/types";
 import { Navbar } from "@/components/layout/Navbar";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AppSidebar, SidebarToggle } from "@/components/layout/AppSidebar";
+import { SidebarOverlay } from "@/components/ui/sidebar";
 import { CampaignCard } from "@/components/campaigns/CampaignCard";
 import { CampaignForm } from "@/components/campaigns/CampaignForm";
 import {
@@ -55,14 +56,14 @@ export default function Campaigns() {
   };
 
   return (
-    <div className="h-full relative">
-      <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-80 bg-gray-900">
-        <Sidebar />
-      </div>
-      <main className="md:pl-72">
+    <>
+      <AppSidebar />
+      <SidebarOverlay />
+      <div className="flex min-h-screen flex-col lg:pl-[280px]">
+        <SidebarToggle />
         <Navbar />
-        <div className="p-8">
-          <div className="flex items-center justify-between">
+        <main className="flex-1 p-6 md:p-8">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold tracking-tight">Campaigns</h2>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
@@ -96,7 +97,7 @@ export default function Campaigns() {
               </Button>
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-8">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {campaigns.map((campaign) => (
                 <CampaignCard
                   key={campaign.id}
@@ -107,8 +108,8 @@ export default function Campaigns() {
               ))}
             </div>
           )}
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }

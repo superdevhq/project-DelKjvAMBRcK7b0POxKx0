@@ -10,7 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchAISettings } from "@/data/mockData";
 import { AISettings } from "@/lib/types";
 import { Navbar } from "@/components/layout/Navbar";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AppSidebar, SidebarToggle } from "@/components/layout/AppSidebar";
+import { SidebarOverlay } from "@/components/ui/sidebar";
 import { Loader2, Save } from "lucide-react";
 import {
   Select,
@@ -80,68 +81,68 @@ export default function Settings() {
 
   if (isLoading) {
     return (
-      <div className="h-full relative">
-        <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-80 bg-gray-900">
-          <Sidebar />
-        </div>
-        <main className="md:pl-72">
+      <>
+        <AppSidebar />
+        <SidebarOverlay />
+        <div className="flex min-h-screen flex-col lg:pl-[280px]">
+          <SidebarToggle />
           <Navbar />
-          <div className="p-8 flex items-center justify-center h-64">
+          <main className="flex-1 p-6 md:p-8 flex items-center justify-center">
             <Loader2 className="h-6 w-6 animate-spin mr-2" />
             <p>Loading settings...</p>
-          </div>
-        </main>
-      </div>
+          </main>
+        </div>
+      </>
     );
   }
 
   if (!settings) {
     return (
-      <div className="h-full relative">
-        <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-80 bg-gray-900">
-          <Sidebar />
-        </div>
-        <main className="md:pl-72">
+      <>
+        <AppSidebar />
+        <SidebarOverlay />
+        <div className="flex min-h-screen flex-col lg:pl-[280px]">
+          <SidebarToggle />
           <Navbar />
-          <div className="p-8">
+          <main className="flex-1 p-6 md:p-8">
             <div className="flex flex-col items-center justify-center h-64 border rounded-lg mt-4 bg-muted/50">
               <h3 className="text-xl font-medium mb-2">Error loading settings</h3>
               <p className="text-muted-foreground mb-4">Please try again later</p>
               <Button onClick={() => window.location.reload()}>Reload</Button>
             </div>
-          </div>
-        </main>
-      </div>
+          </main>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="h-full relative">
-      <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-80 bg-gray-900">
-        <Sidebar />
-      </div>
-      <main className="md:pl-72">
+    <>
+      <AppSidebar />
+      <SidebarOverlay />
+      <div className="flex min-h-screen flex-col lg:pl-[280px]">
+        <SidebarToggle />
         <Navbar />
-        <div className="p-8">
-          <div className="flex items-center justify-between">
+        <main className="flex-1 p-6 md:p-8">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
           </div>
 
-          <Tabs defaultValue="ai" className="mt-6">
+          <Tabs defaultValue="ai" className="space-y-6">
             <TabsList>
               <TabsTrigger value="ai">AI Configuration</TabsTrigger>
               <TabsTrigger value="account">Account</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
             </TabsList>
-            <TabsContent value="ai" className="space-y-4">
-              <Card>
+            <TabsContent value="ai" className="space-y-6">
+              <Card className="hover:shadow-md transition-all duration-200">
                 <CardHeader>
                   <CardTitle>AI Response Settings</CardTitle>
                   <CardDescription>
                     Configure how the AI generates responses to comments
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="tone">Response Tone</Label>
                     <Select
@@ -265,8 +266,8 @@ export default function Settings() {
               </div>
             </TabsContent>
           </Tabs>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }

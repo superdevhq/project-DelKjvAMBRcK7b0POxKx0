@@ -4,7 +4,7 @@ import { Campaign } from "@/lib/types";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Trash2, PauseCircle, PlayCircle, MessageSquare, Target } from "lucide-react";
+import { Edit, Trash2, PauseCircle, PlayCircle, MessageSquare, Target, Calendar, MoreHorizontal } from "lucide-react";
 import { CampaignForm } from "./CampaignForm";
 import {
   Dialog,
@@ -23,6 +23,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
 
 interface CampaignCardProps {
@@ -54,72 +61,111 @@ export function CampaignCard({ campaign, onUpdate, onDelete }: CampaignCardProps
     setIsDeleteDialogOpen(false);
   };
 
+  // Format date to be more readable
+  const formattedDate = new Date(campaign.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+
   return (
-    <Card className="overflow-hidden">
-      <CardHeader className="pb-3">
+    <Card className="overflow-hidden transition-all duration-200 hover:shadow-md">
+      <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg font-bold">{campaign.name}</CardTitle>
+          <CardTitle className="text-xl font-bold">{campaign.name}</CardTitle>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <MoreHorizontal className="h-4 w-4" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleStatusToggle}>
+                {campaign.status === "active" ? (
+                  <>
+                    <PauseCircle className="mr-2 h-4 w-4" />
+                    Pause
+                  </>
+                ) : (
+                  <>
+                    <PlayCircle className="mr-2 h-4 w-4" />
+                    Activate
+                  </>
+                )}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem 
+                onClick={() => setIsDeleteDialogOpen(true)}
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div className="flex items-center gap-2 mt-1">
           <Badge
             variant={campaign.status === "active" ? "default" : "secondary"}
             className="capitalize"
           >
             {campaign.status}
           </Badge>
+          <CardDescription className="flex items-center text-xs">
+            <Calendar className="h-3 w-3 mr-1" />
+            {formattedDate}
+          </CardDescription>
         </div>
-        <CardDescription className="text-xs">
-          Created on {new Date(campaign.createdAt).toLocaleDateString()}
-        </CardDescription>
       </CardHeader>
-      <CardContent className="pb-3">
-        <div className="flex items-center gap-4 text-sm">
-          <div className="flex items-center gap-1">
-            <Target className="h-4 w-4 text-muted-foreground" />
-            <span>{campaign.adCount} ads</span>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-4 mt-2">
+          <div className="flex flex-col items-center justify-center p-3 bg-muted/50 rounded-lg">
+            <div className="flex items-center gap-1 text-sm text-muted-foreground mb-1">
+              <Target className="h-4 w-4" />
+              <span>Ads</span>
+            </div>
+            <p className="text-2xl font-bold">{campaign.adCount}</p>
           </div>
-          <div className="flex items-center gap-1">
-            <MessageSquare className="h-4 w-4 text-muted-foreground" />
-            <span>{campaign.commentCount} comments</span>
+          <div className="flex flex-col items-center justify-center p-3 bg-muted/50 rounded-lg">
+            <div className="flex items-center gap-1 text-sm text-muted-foreground mb-1">
+              <MessageSquare className="h-4 w-4" />
+              <span>Comments</span>
+            </div>
+            <p className="text-2xl font-bold">{campaign.commentCount}</p>
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between pt-3 border-t">
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsEditDialogOpen(true)}
-          >
-            <Edit className="h-4 w-4 mr-1" />
-            Edit
-          </Button>
-          <Button
-            variant={campaign.status === "active" ? "outline" : "default"}
-            size="sm"
-            onClick={handleStatusToggle}
-          >
-            {campaign.status === "active" ? (
-              <>
-                <PauseCircle className="h-4 w-4 mr-1" />
-                Pause
-              </>
-            ) : (
-              <>
-                <PlayCircle className="h-4 w-4 mr-1" />
-                Activate
-              </>
-            )}
-          </Button>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => setIsDeleteDialogOpen(true)}
-          >
-            <Trash2 className="h-4 w-4 mr-1" />
-            Delete
-          </Button>
-        </div>
+      <CardFooter className="flex justify-between pt-4 border-t">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setIsEditDialogOpen(true)}
+        >
+          <Edit className="h-4 w-4 mr-2" />
+          Edit
+        </Button>
+        <Button
+          variant={campaign.status === "active" ? "outline" : "default"}
+          size="sm"
+          onClick={handleStatusToggle}
+        >
+          {campaign.status === "active" ? (
+            <>
+              <PauseCircle className="h-4 w-4 mr-2" />
+              Pause
+            </>
+          ) : (
+            <>
+              <PlayCircle className="h-4 w-4 mr-2" />
+              Activate
+            </>
+          )}
+        </Button>
       </CardFooter>
 
       {/* Edit Dialog */}

@@ -4,7 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchComments, fetchPendingComments, generateAIReply } from "@/data/mockData";
 import { Comment } from "@/lib/types";
 import { Navbar } from "@/components/layout/Navbar";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AppSidebar, SidebarToggle } from "@/components/layout/AppSidebar";
+import { SidebarOverlay } from "@/components/ui/sidebar";
 import { CommentQueue } from "@/components/comments/CommentQueue";
 import { CommentHistory } from "@/components/comments/CommentHistory";
 
@@ -71,18 +72,18 @@ export default function Comments() {
   };
 
   return (
-    <div className="h-full relative">
-      <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-80 bg-gray-900">
-        <Sidebar />
-      </div>
-      <main className="md:pl-72">
+    <>
+      <AppSidebar />
+      <SidebarOverlay />
+      <div className="flex min-h-screen flex-col lg:pl-[280px]">
+        <SidebarToggle />
         <Navbar />
-        <div className="p-8">
-          <div className="flex items-center justify-between">
+        <main className="flex-1 p-6 md:p-8">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold tracking-tight">Comments</h2>
           </div>
           
-          <Tabs defaultValue="queue" className="mt-6">
+          <Tabs defaultValue="queue" className="space-y-6">
             <TabsList>
               <TabsTrigger value="queue">
                 Queue
@@ -108,8 +109,8 @@ export default function Comments() {
               />
             </TabsContent>
           </Tabs>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }

@@ -34,15 +34,6 @@
     --ring: 271 81% 56%;
 
     --radius: 0.5rem;
-
-    --sidebar-background: 240 10% 3.9%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 271 81% 56%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 271 81% 56%;
   }
 
   .dark {
@@ -109,4 +100,35 @@
 
 .hover-scale {
   @apply transition-transform duration-200 hover:scale-105;
+}
+
+/* Card hover effects */
+.card {
+  @apply transition-all duration-200 hover:shadow-md;
+}
+
+/* Sidebar styles */
+.sidebar-item {
+  @apply flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary;
+}
+
+.sidebar-item.active {
+  @apply bg-primary/10 text-primary;
+}
+
+/* Dashboard stat cards */
+.stat-card {
+  @apply relative overflow-hidden;
+}
+
+.stat-card-icon {
+  @apply rounded-full bg-primary/10 p-2;
+}
+
+.stat-card-value {
+  @apply text-2xl font-bold;
+}
+
+.stat-card-label {
+  @apply text-xs text-muted-foreground;
 }

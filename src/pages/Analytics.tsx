@@ -1,37 +1,40 @@
 
 import { Navbar } from "@/components/layout/Navbar";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AppSidebar, SidebarToggle } from "@/components/layout/AppSidebar";
+import { SidebarOverlay } from "@/components/ui/sidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, LineChart, PieChart } from "lucide-react";
 
 export default function Analytics() {
   return (
-    <div className="h-full relative">
-      <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-80 bg-gray-900">
-        <Sidebar />
-      </div>
-      <main className="md:pl-72">
+    <>
+      <AppSidebar />
+      <SidebarOverlay />
+      <div className="flex min-h-screen flex-col lg:pl-[280px]">
+        <SidebarToggle />
         <Navbar />
-        <div className="p-8">
-          <div className="flex items-center justify-between">
+        <main className="flex-1 p-6 md:p-8">
+          <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold tracking-tight">Analytics</h2>
           </div>
 
-          <Tabs defaultValue="overview" className="mt-6">
+          <Tabs defaultValue="overview" className="space-y-6">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="comments">Comments</TabsTrigger>
               <TabsTrigger value="performance">Performance</TabsTrigger>
             </TabsList>
-            <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                <Card>
+            <TabsContent value="overview" className="space-y-6">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Total Comments
                     </CardTitle>
-                    <BarChart className="h-4 w-4 text-muted-foreground" />
+                    <div className="rounded-full bg-primary/10 p-2">
+                      <BarChart className="h-4 w-4 text-primary" />
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">74</div>
@@ -43,12 +46,14 @@ export default function Analytics() {
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Response Rate
                     </CardTitle>
-                    <LineChart className="h-4 w-4 text-muted-foreground" />
+                    <div className="rounded-full bg-primary/10 p-2">
+                      <LineChart className="h-4 w-4 text-primary" />
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">92%</div>
@@ -60,12 +65,14 @@ export default function Analytics() {
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Average Response Time
                     </CardTitle>
-                    <PieChart className="h-4 w-4 text-muted-foreground" />
+                    <div className="rounded-full bg-primary/10 p-2">
+                      <PieChart className="h-4 w-4 text-primary" />
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">5.2 min</div>
@@ -79,7 +86,7 @@ export default function Analytics() {
                 </Card>
               </div>
 
-              <Card>
+              <Card className="hover:shadow-md transition-all duration-200">
                 <CardHeader>
                   <CardTitle>Monthly Activity</CardTitle>
                   <CardDescription>
@@ -93,8 +100,8 @@ export default function Analytics() {
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="comments" className="space-y-4">
-              <Card>
+            <TabsContent value="comments" className="space-y-6">
+              <Card className="hover:shadow-md transition-all duration-200">
                 <CardHeader>
                   <CardTitle>Comment Analytics</CardTitle>
                   <CardDescription>
@@ -108,8 +115,8 @@ export default function Analytics() {
                 </CardContent>
               </Card>
               
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card>
+              <div className="grid gap-6 md:grid-cols-2">
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader>
                     <CardTitle>Comment Sentiment</CardTitle>
                     <CardDescription>
@@ -122,7 +129,7 @@ export default function Analytics() {
                     </div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader>
                     <CardTitle>Comment Categories</CardTitle>
                     <CardDescription>
@@ -137,8 +144,8 @@ export default function Analytics() {
                 </Card>
               </div>
             </TabsContent>
-            <TabsContent value="performance" className="space-y-4">
-              <Card>
+            <TabsContent value="performance" className="space-y-6">
+              <Card className="hover:shadow-md transition-all duration-200">
                 <CardHeader>
                   <CardTitle>AI Performance</CardTitle>
                   <CardDescription>
@@ -152,8 +159,8 @@ export default function Analytics() {
                 </CardContent>
               </Card>
               
-              <div className="grid gap-4 md:grid-cols-3">
-                <Card>
+              <div className="grid gap-6 md:grid-cols-3">
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm">Response Quality</CardTitle>
                   </CardHeader>
@@ -164,7 +171,7 @@ export default function Analytics() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm">Success Rate</CardTitle>
                   </CardHeader>
@@ -175,7 +182,7 @@ export default function Analytics() {
                     </p>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="hover:shadow-md transition-all duration-200">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm">Processing Time</CardTitle>
                   </CardHeader>
@@ -189,8 +196,8 @@ export default function Analytics() {
               </div>
             </TabsContent>
           </Tabs>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }
