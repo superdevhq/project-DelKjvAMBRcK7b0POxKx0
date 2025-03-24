@@ -12,6 +12,7 @@ export default function Comments() {
   const [pendingComments, setPendingComments] = useState<Comment[]>([]);
   const [repliedComments, setRepliedComments] = useState<Comment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [sidebarWidth, setSidebarWidth] = useState(64);
 
   useEffect(() => {
     const loadComments = async () => {
@@ -29,6 +30,18 @@ export default function Comments() {
     };
 
     loadComments();
+
+    // Listen for sidebar width changes
+    const sidebarElement = document.querySelector('.sidebar');
+    if (sidebarElement) {
+      const observer = new ResizeObserver(entries => {
+        for (let entry of entries) {
+          setSidebarWidth(entry.contentRect.width);
+        }
+      });
+      observer.observe(sidebarElement);
+      return () => observer.disconnect();
+    }
   }, []);
 
   const handleGenerateReply = async (commentId: string) => {
@@ -71,11 +84,14 @@ export default function Comments() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="main-layout">
       <AppSidebar />
-      <div className="flex-1">
+      <div 
+        className="main-content"
+        style={{ marginLeft: `${sidebarWidth}px` }}
+      >
         <Navbar />
-        <main className="flex-1 p-6 md:p-8">
+        <main className="p-6 md:p-8">
           <h1 className="text-3xl font-bold mb-8">Comments</h1>
           
           <Tabs defaultValue="queue" className="w-full">

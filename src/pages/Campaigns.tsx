@@ -21,6 +21,7 @@ export default function Campaigns() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(64);
 
   useEffect(() => {
     const loadCampaigns = async () => {
@@ -35,6 +36,18 @@ export default function Campaigns() {
     };
 
     loadCampaigns();
+
+    // Listen for sidebar width changes
+    const sidebarElement = document.querySelector('.sidebar');
+    if (sidebarElement) {
+      const observer = new ResizeObserver(entries => {
+        for (let entry of entries) {
+          setSidebarWidth(entry.contentRect.width);
+        }
+      });
+      observer.observe(sidebarElement);
+      return () => observer.disconnect();
+    }
   }, []);
 
   const handleCreateCampaign = (campaign: Campaign) => {
@@ -55,11 +68,14 @@ export default function Campaigns() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="main-layout">
       <AppSidebar />
-      <div className="flex-1">
+      <div 
+        className="main-content"
+        style={{ marginLeft: `${sidebarWidth}px` }}
+      >
         <Navbar />
-        <main className="flex-1 p-6 md:p-8">
+        <main className="p-6 md:p-8">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl font-bold">Ad Campaigns</h1>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

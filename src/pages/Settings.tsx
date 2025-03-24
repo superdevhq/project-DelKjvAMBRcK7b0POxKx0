@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -22,13 +22,31 @@ export default function Settings() {
     "You are a helpful customer service representative responding to a customer comment on a Facebook ad. Your response should be helpful, concise, and friendly."
   );
   const [prohibitedWords, setProhibitedWords] = useState("swear, curse, offensive");
+  const [sidebarWidth, setSidebarWidth] = useState(64);
+
+  useEffect(() => {
+    // Listen for sidebar width changes
+    const sidebarElement = document.querySelector('.sidebar');
+    if (sidebarElement) {
+      const observer = new ResizeObserver(entries => {
+        for (let entry of entries) {
+          setSidebarWidth(entry.contentRect.width);
+        }
+      });
+      observer.observe(sidebarElement);
+      return () => observer.disconnect();
+    }
+  }, []);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="main-layout">
       <AppSidebar />
-      <div className="flex-1">
+      <div 
+        className="main-content"
+        style={{ marginLeft: `${sidebarWidth}px` }}
+      >
         <Navbar />
-        <main className="flex-1 p-6 md:p-8">
+        <main className="p-6 md:p-8">
           <h1 className="text-3xl font-bold mb-2">Settings</h1>
           <p className="text-muted-foreground mb-8">
             Configure how your AI assistant responds to comments.

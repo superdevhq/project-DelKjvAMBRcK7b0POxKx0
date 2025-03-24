@@ -80,7 +80,7 @@
 
 /* Custom sidebar styles */
 .sidebar {
-  @apply fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-border;
+  @apply fixed inset-y-0 left-0 z-50 bg-white border-r border-border;
 }
 
 .sidebar-header {
@@ -117,6 +117,15 @@
 
 .sidebar-footer {
   @apply absolute bottom-0 left-0 right-0 p-4 border-t;
+}
+
+/* Main content layout */
+.main-layout {
+  @apply flex min-h-screen;
+}
+
+.main-content {
+  @apply flex-1 transition-all duration-300 ease-in-out;
 }
 
 /* Settings page styles */

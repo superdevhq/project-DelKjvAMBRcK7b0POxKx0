@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,12 +7,31 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, LineChart, PieChart } from "lucide-react";
 
 export default function Analytics() {
+  const [sidebarWidth, setSidebarWidth] = useState(64);
+
+  useEffect(() => {
+    // Listen for sidebar width changes
+    const sidebarElement = document.querySelector('.sidebar');
+    if (sidebarElement) {
+      const observer = new ResizeObserver(entries => {
+        for (let entry of entries) {
+          setSidebarWidth(entry.contentRect.width);
+        }
+      });
+      observer.observe(sidebarElement);
+      return () => observer.disconnect();
+    }
+  }, []);
+
   return (
-    <div className="flex min-h-screen">
+    <div className="main-layout">
       <AppSidebar />
-      <div className="flex-1">
+      <div 
+        className="main-content"
+        style={{ marginLeft: `${sidebarWidth}px` }}
+      >
         <Navbar />
-        <main className="flex-1 p-6 md:p-8">
+        <main className="p-6 md:p-8">
           <h1 className="text-3xl font-bold mb-8">Analytics</h1>
 
           <Tabs defaultValue="overview" className="w-full">
